@@ -1,30 +1,48 @@
 // ===== Settings ===== //
-const uint8_t channels[] = {1, 6, 11}; // used Wi-Fi channels (available: 1-14)
-const bool wpa2 = false; // WPA2 networks
-const bool appendSpaces = true; // makes all SSIDs 32 characters long to improve performance
+bool appendSpaces = true; // makes all SSIDs 32 characters long to improve performance
 
-/*
-SSIDs:
-- don't forget the \n at the end of each SSID!
-- max. 32 characters per SSID
-- don't add duplicates! You have to change one character at least
-*/
-const char ssids[] PROGMEM = {
-  "TEST1\n"
-  "TEST2\n"
-  "TEST3\n"
-  "TEST4\n"
-  "TEST5\n"
+// ===== Preset Definitions ===== //
+// You can edit the names, SSIDs, channels, and WPA2 settings for each preset here.
+// SSIDs should be separated by \n. Max 32 characters per SSID.
+struct Preset {
+  const char* name;
+  const char* ssids; 
+  uint8_t ch[3];
+  uint8_t chCount;
+  bool wpa2;
 };
+
+Preset presets[10] = {
+  {"Preset 1", "TEST1\nTEST2\nTEST3\nTEST4\nTEST5\n", {1, 6, 11}, 3, false},
+  {"Preset 2", "Free_WiFi\nStarbucks_Guest\nCafe_Network\n", {1, 6, 11}, 3, false},
+  {"Preset 3", "FBI Surveillance Van\nPolice Car\n", {1, 6, 11}, 3, true},
+  {"Preset 4", "Pretty Fly for a WiFi\nTell My WiFi Love Her\n", {1, 6, 11}, 3, false},
+  {"Preset 5", "Connecting...\nSearching for Network\n", {1, 6, 11}, 3, false},
+  {"Preset 6", "Virus_Distribution\nMalware_Hub\n", {1, 6, 11}, 3, true},
+  {"Preset 7", "Area 51 Test Site\nUFO_WiFi\n", {1, 6, 11}, 3, false},
+  {"Preset 8", "Skynet Global Defense\nTerminator_Net\n", {1, 6, 11}, 3, true},
+  {"Preset 9", "Mom Use This One\nDad's Secret WiFi\n", {1, 6, 11}, 3, false},
+  {"Preset 10", "Loading...\nBuffering 99%\n", {1, 6, 11}, 3, false}
+};
+
+int currentPresetIndex = 0;
+char activeSsids[1024]; // Buffer to hold the currently active SSIDs
 
 // ==================== //
 // ===== Includes ===== //
 #include <WiFi.h>
+#include <WebServer.h>
 #include <esp_wifi.h>
-#include <pgmspace.h>
+#include <string.h>
 
 // ==================== //
+WebServer server(80);
+
 // run-time variables
+uint8_t channels[3] = {1, 6, 11}; // Active channels (updated by preset)
+uint8_t channelCount = 3;
+bool wpa2 = false;
+
 char emptySSID[32];
 uint8_t channelIndex = 0;
 uint8_t macAddr[6];
@@ -49,14 +67,7 @@ uint8_t beaconPacket[109] = {
   // Tagged parameters
   // SSID parameters
   /* 36 - 37 */ 0x00, 0x20, // Tag: Set SSID length, Tag length: 32
-  /* 38 - 69 */ 0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20,
-  0x20, 0x20, 0x20, 0x20, // SSID
+  /* 38 - 69 */ 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, // SSID
   // Supported Rates
   /* 70 - 71 */ 0x01, 0x08, // Tag: Supported Rates, Tag length: 8
   /* 72 */ 0x82, // 1(B)
@@ -75,11 +86,54 @@ uint8_t beaconPacket[109] = {
   /* 85 - 86 */ 0x01, 0x00,
   /* 87 - 90 */ 0x00, 0x0f, 0xac, 0x02,
   /* 91 - 92 */ 0x02, 0x00,
-  /* 93 - 100 */ 0x00, 0x0f, 0xac, 0x04, 0x00, 0x0f, 0xac, 0x04, /*Fix: changed 0x02(TKIP) to 0x04(CCMP) is default. WPA2 with TKIP not supported by many devices*/
+  /* 93 - 100 */ 0x00, 0x0f, 0xac, 0x04, 0x00, 0x0f, 0xac, 0x04,
   /* 101 - 102 */ 0x01, 0x00,
   /* 103 - 106 */ 0x00, 0x0f, 0xac, 0x02,
   /* 107 - 108 */ 0x00, 0x00
 };
+
+// Function to apply a preset from the code definitions
+void applyPreset(int index) {
+  if (index < 0 || index >= 10) return;
+  currentPresetIndex = index;
+  
+  // Copy SSIDs to active buffer
+  strncpy(activeSsids, presets[currentPresetIndex].ssids, sizeof(activeSsids) - 1);
+  activeSsids[sizeof(activeSsids) - 1] = '\0';
+
+  // Update channels
+  channelCount = presets[currentPresetIndex].chCount;
+  if (channelCount == 0) channelCount = 1;
+  for(int i = 0; i < channelCount && i < 3; i++) {
+    channels[i] = presets[currentPresetIndex].ch[i];
+  }
+  // Fill the rest with the last valid channel to prevent 0
+  for(int i = channelCount; i < 3; i++) {
+    channels[i] = channels[channelCount - 1];
+  }
+
+  // Update wpa2
+  wpa2 = presets[currentPresetIndex].wpa2;
+
+  // Update packet size and capabilities based on wpa2
+  if (wpa2) {
+    beaconPacket[34] = 0x31;
+    packetSize = sizeof(beaconPacket);
+  } else {
+    beaconPacket[34] = 0x21;
+    packetSize = sizeof(beaconPacket) - 26;
+  }
+
+  // Reset channel hopping to start fresh on the new preset
+  channelIndex = 0;
+  wifi_channel = channels[0];
+  esp_wifi_set_channel(wifi_channel, WIFI_SECOND_CHAN_NONE);
+
+  Serial.print("Switched to: ");
+  Serial.println(presets[currentPresetIndex].name);
+  Serial.println("Active SSIDs:");
+  Serial.println(activeSsids);
+}
 
 // Shift out channels one by one
 void nextChannel() {
@@ -99,8 +153,53 @@ void randomMac() {
   for (int i = 0; i < 6; i++) {
     macAddr[i] = random(256);
   }
-  // Ensure it's a locally administered unicast MAC address
   macAddr[0] = (macAddr[0] & 0xFE) | 0x02;
+}
+
+// ==========================================
+// ===== RETRO TERMINAL WEB UI ===== //
+// ==========================================
+void handleRoot() {
+  String html = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'>";
+  html += "<title>ESP32 Beacon Spammer</title>";
+  html += "<style>";
+  html += "body { background-color: #000000; color: #00FF00; font-family: 'Courier New', Courier, monospace; text-align: center; margin: 0; padding: 20px; box-sizing: border-box; min-height: 100vh; }";
+  html += "h1, h2, p, select, button { text-shadow: 0 0 5px #00FF00; }"; // CRT phosphor glow effect
+  html += "h1 { font-size: 24px; margin-bottom: 10px; letter-spacing: 2px; }";
+  html += "h2 { font-size: 18px; margin-top: 30px; }";
+  html += "select { background-color: #000000; color: #00FF00; border: 2px solid #00FF00; padding: 10px; font-size: 16px; font-family: 'Courier New', Courier, monospace; margin: 10px; cursor: pointer; outline: none; }";
+  html += "select:focus { border-color: #33FF33; box-shadow: 0 0 10px #00FF00; }";
+  html += "button { background-color: #000000; color: #00FF00; border: 2px solid #00FF00; padding: 10px 20px; font-size: 16px; font-family: 'Courier New', Courier, monospace; cursor: pointer; margin-top: 10px; transition: all 0.2s; }";
+  html += "button:hover { background-color: #00FF00; color: #000000; text-shadow: none; box-shadow: 0 0 15px #00FF00; }";
+  html += ".current { margin-top: 40px; font-size: 18px; border-top: 1px solid #00FF00; padding-top: 20px; display: inline-block; }";
+  html += ".blink { animation: blinker 1s step-end infinite; }";
+  html += "@keyframes blinker { 50% { opacity: 0; } }";
+  html += "</style></head><body>";
+  
+  html += "<h1>> ESP32 BEACON SPAMMER _<span class='blink'>|</span></h1>";
+  html += "<h2>[ SELECT TARGET PRESET ]</h2>";
+  
+  html += "<form action='/apply' method='POST'>";
+  html += "<select name='preset'>";
+  for (int i = 0; i < 10; i++) {
+    html += "<option value='" + String(i) + "'" + (i == currentPresetIndex ? " selected" : "") + ">" + String(presets[i].name) + "</option>";
+  }
+  html += "</select><br>";
+  html += "<button type='submit'>[ EXECUTE ]</button>";
+  html += "</form>";
+  
+  html += "<p class='current'>ACTIVE PRESET: <strong>" + String(presets[currentPresetIndex].name) + "</strong></p>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
+
+void handleApply() {
+  if (server.hasArg("preset")) {
+    int presetIndex = server.arg("preset").toInt();
+    applyPreset(presetIndex);
+  }
+  server.sendHeader("Location", "/", true);
+  server.send(302, "text/plain", "Redirecting...");
 }
 
 void setup() {
@@ -109,69 +208,62 @@ void setup() {
     emptySSID[i] = ' ';
   }
 
-  // for random generator
   randomSeed(esp_random());
-
-  // set packetSize
-  packetSize = sizeof(beaconPacket);
-  if (wpa2) {
-    beaconPacket[34] = 0x31;
-  } else {
-    beaconPacket[34] = 0x21;
-    packetSize -= 26;
-  }
-
-  // generate random mac address
   randomMac();
 
-  // start serial
   Serial.begin(115200);
   Serial.println();
 
-  // start WiFi
-  WiFi.mode(WIFI_MODE_STA);
+  // Load the first preset by default
+  applyPreset(0);
+
+  // start WiFi in AP+STA mode to allow Web Server while keeping STA for beacon spam
+  WiFi.mode(WIFI_MODE_APSTA);
   
+  // Start Access Point for Web UI
+  WiFi.softAP("ESP32-Beacon-Config");
+  Serial.println("Web UI AP started. Connect to 'ESP32-Beacon-Config' and visit:");
+  Serial.println(WiFi.softAPIP());
+
+  // Setup Web Server routes
+  server.on("/", HTTP_GET, handleRoot);
+  server.on("/apply", HTTP_POST, handleApply);
+  server.begin();
+  Serial.println("Web server started");
+
   // Enable promiscuous mode to ensure raw frame transmission works reliably on ESP32
   esp_wifi_set_promiscuous(true);
   
   // Set to default WiFi channel
   esp_wifi_set_channel(channels[0], WIFI_SECOND_CHAN_NONE);
 
-  // Display all saved WiFi SSIDs
-  Serial.println("SSIDs:");
-  int i = 0;
-  int len = sizeof(ssids);
-  while (i < len) {
-    Serial.print((char)pgm_read_byte(ssids + i));
-    i++;
-  }
-  Serial.println();
-  Serial.println("Started \\o/");
+  Serial.println("Started o/");
   Serial.println();
 }
 
 void loop() {
+  // Handle Web Server requests
+  server.handleClient();
+
   currentTime = millis();
 
   // send out SSIDs
   if (currentTime - attackTime > 100) {
     attackTime = currentTime;
 
-    // temp variables
     int i = 0;
     int j = 0;
     int ssidNum = 1;
     char tmp;
-    int ssidsLen = strlen_P(ssids);
+    int ssidsLen = strlen(activeSsids);
 
-    // Go to next channel
     nextChannel();
 
     while (i < ssidsLen) {
       // Get the next SSID
       j = 0;
       do {
-        tmp = pgm_read_byte(ssids + i + j);
+        tmp = activeSsids[i + j];
         j++;
       } while (tmp != '\n' && j <= 32 && i + j < ssidsLen);
 
@@ -189,7 +281,7 @@ void loop() {
       memcpy(&beaconPacket[38], emptySSID, 32);
 
       // write new SSID into beacon frame
-      memcpy_P(&beaconPacket[38], &ssids[i], ssidLen);
+      memcpy(&beaconPacket[38], &activeSsids[i], ssidLen);
 
       // set channel for beacon frame
       beaconPacket[82] = wifi_channel;
