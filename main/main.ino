@@ -14,16 +14,16 @@ struct Preset {
 };
 
 Preset presets[10] = {
-  {"Preset 1", "TEST1\nTEST2\nTEST3\nTEST4\nTEST5\n", {1, 6, 11}, 3, false},
-  {"Preset 2", "Free_WiFi\nStarbucks_Guest\nCafe_Network\n", {1, 6, 11}, 3, false},
-  {"Preset 3", "FBI Surveillance Van\nPolice Car\n", {1, 6, 11}, 3, true},
-  {"Preset 4", "Pretty Fly for a WiFi\nTell My WiFi Love Her\n", {1, 6, 11}, 3, false},
-  {"Preset 5", "Connecting...\nSearching for Network\n", {1, 6, 11}, 3, false},
-  {"Preset 6", "Virus_Distribution\nMalware_Hub\n", {1, 6, 11}, 3, true},
-  {"Preset 7", "Area 51 Test Site\nUFO_WiFi\n", {1, 6, 11}, 3, false},
-  {"Preset 8", "Skynet Global Defense\nTerminator_Net\n", {1, 6, 11}, 3, true},
-  {"Preset 9", "Mom Use This One\nDad's Secret WiFi\n", {1, 6, 11}, 3, false},
-  {"Preset 10", "Loading...\nBuffering 99%\n", {1, 6, 11}, 3, false}
+  {"Test", "Test01\nTest02\nTest03\nTest04\nTest05\nTest06\nTest07\nTest08\nTest09\nTest10\n", {1, 6, 11}, 3, false},
+  {"Goetia", "Bael\nAgares\nVassago\nSamigina\nMarbas\nValefor\nAmon\nBarbatos\nPaimon\nBuer\nGuison\nSitri\nBeleth\nLeraje\nEligos\nZepar\nBotis\nBathin\nSallos\nPurson\nMarax\nIpos\nAim\nNaberius\nGlasya-Labolas\nBune\nRonove\nBerith\nAstaroth\nForneus\nForas\nAsmoday\nGaap\nFurfur\nMarchosias\nStolas\nPhenex\nHalphas\nMalphas\nRaum\nFocalor\nVepar\nSabnock\nShax\nVine\nBifrons\nVual\nHaagenti\nCrocell\nFurcas\nBalam\nAlloces\nCaim\nMurmur\nOrobas\nGremory\nOse\nAmy\nOrias\nVapula\nZagan\nValac\nAndras\nHaures\nAndrealphus\nCimeies\nAmdusias\nBelial\nDecarabia\nSeere\nDantalion\nAndromalius\n", {1, 6, 11}, 3, false},
+  {"Golf", "A Good Walk Spoiled\nTadger Woods\nSmug Bastards Gowf Club\nGrass Chasers\nThe Old Man Shuffle\nGolf Harris\nPutt Putt\nRory McKilljoy\nDonald Trump Plays Gowf\nDonald Trump Is A Paedo\nChasing A Little White Ball\nTeatime Torture\nPro Lawn Ornament Hunters\nGowf Is Bowff\nGrassy Puttocks\nLawn Tiddlywinks\nTake Me In The Bunker\n18 Holes Of Nothing\nBunker Bummers\nPutt It In My Hole\nCheck Out My Action Slacks\nTee Off Then Piss Off\nGrab My Putt Stick\nA Tuft Of Ass\nDirthole Digglers\nOne Glove Love\nTickle My Dimpled White Balls\n18 Dirtholes Of Man Joy\nA Pastime For Pensioners\nA Hole In Bum\nTony Jackshit\nFore! Skin\nA Putt In The Butt\nGrip The Shaft Tightly\nLawn Shufflers\nWiggle My Puttocks\nUp The Bunker\nSpank Me With Your Golf Shoe\n19th Gloryhole\nCaddyshat\nDonald Gump Gowf Club\nGolf Is For Losers\n", {1, 6, 11}, 3, false},
+  {"Rickroll", "We're no strangers to love\nYou know the rules and so do I\nA full commitment's\nwhat I'm thinking of\nYou wouldn't get this\nfrom any other guy\nI just wanna tell you\nhow I'm feeling\nGotta make you understand\nNever gonna give you up\nNever gonna let you down\nNever gonna run around\nand desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie\nand hurt you\nWe've known each other\nfor so long\nYour heart's been aching\nbut you're too shy to say it\nInside we both know\nwhat's been goin' on\nWe know the game\nand we're gonna play it\nAnd if you ask me\nhow I'm feeling\nDon't tell me\nyou're too blind to see\n", {1, 6, 11}, 3, false},
+  {"Custom 1", "Custom1\n", {1, 6, 11}, 3, false},
+  {"Custom 2", "Custom2\n", {1, 6, 11}, 3, false},
+  {"Custom 3", "Custom3\n", {1, 6, 11}, 3, false},
+  {"Custom 4", "Custom4\n", {1, 6, 11}, 3, false},
+  {"Custom 5", "Custom5\n", {1, 6, 11}, 3, false},
+  {"Custom 6", "Custom6\n", {1, 6, 11}, 3, false}
 };
 
 int currentPresetIndex = -1; // -1 means no preset is active
@@ -180,7 +180,7 @@ void handleRoot() {
   html += ".blink { animation: blinker 1s step-end infinite; }";
   html += "@keyframes blinker { 50% { opacity: 0; } }";
   html += "</style></head><body>";
-  html += "<h1>> ESP32 BEACON SPAMMER _<span class='blink'>|</span></h1>";
+  html += "<h1>ESP32 BEACON SPAMMER</h1>";
   html += "<h2>[ SELECT TARGET PRESET ]</h2>";
   html += "<form action='/apply' method='POST'>";
   html += "<select name='preset'>";
@@ -195,7 +195,7 @@ void handleRoot() {
   if (currentPresetIndex >= 0) {
     html += "<p class='current'>ACTIVE PRESET: <strong>" + String(presets[currentPresetIndex].name) + "</strong></p>";
   } else {
-    html += "<p class='current'>ACTIVE PRESET: <strong>NONE (Select a preset to start)</strong></p>";
+    html += "<p class='current'>ACTIVE PRESET: <strong>NONE</strong></p>";
   }
   html += "</body></html>";
   server.send(200, "text/html", html);
@@ -210,9 +210,9 @@ void handleApply() {
   // Send a final response before shutting down the network stack
   String html = "<!DOCTYPE html><html><head><meta http-equiv='refresh' content='5;url=/'></head>";
   html += "<body style='background-color:#000;color:#00FF00;font-family:\"Courier New\",Courier,monospace;text-align:center;padding:50px;'>";
-  html += "<h1>> PRESET APPLIED_</h1>";
-  html += "<p>Shutting down Web UI and Access Point to maximize beacon spam performance...</p>";
-  html += "<p>Device will continue spamming in the background.</p>";
+  html += "<h1>[ PRESET APPLIED ]</h1>";
+  html += "<p>SHUTTING DOWN WEB UI AND ACCESS POINT TO MAXIMISE BEACON SPAM PERFORMANCE</p>";
+  html += "<p>DEVICE WILL CONTINUE SPAMMING IN THE BACKGROUND</p>";
   html += "</body></html>";
   
   server.send(200, "text/html", html);
@@ -241,8 +241,8 @@ void setup() {
   WiFi.mode(WIFI_MODE_APSTA);
   
   // Start Access Point for Web UI
-  WiFi.softAP("ESP32-Beacon-Config");
-  Serial.println("Web UI AP started. Connect to 'ESP32-Beacon-Config' and visit:");
+  WiFi.softAP("•°|°•", "p5yb3rn4ut");
+  Serial.println("Web UI AP started. Connect to '•°|°•' and visit:");
   Serial.println(WiFi.softAPIP());
   
   // Setup Web Server routes
