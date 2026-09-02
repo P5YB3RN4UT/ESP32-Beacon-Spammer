@@ -26,7 +26,7 @@ Preset presets[10] = {
   {"Preset 10", "Loading...\nBuffering 99%\n", {1, 6, 11}, 3, false}
 };
 
-int currentPresetIndex = 0;
+int currentPresetIndex = -1; // -1 means no preset is active
 char activeSsids[4096]; // Increased buffer size to allow more SSIDs per preset now that AP is disabled
 
 // ==================== //
@@ -190,7 +190,13 @@ void handleRoot() {
   html += "</select><br>";
   html += "<button type='submit'>[ EXECUTE ]</button>";
   html += "</form>";
-  html += "<p class='current'>ACTIVE PRESET: <strong>" + String(presets[currentPresetIndex].name) + "</strong></p>";
+  
+  // Safely check if a preset is active before displaying it
+  if (currentPresetIndex >= 0) {
+    html += "<p class='current'>ACTIVE PRESET: <strong>" + String(presets[currentPresetIndex].name) + "</strong></p>";
+  } else {
+    html += "<p class='current'>ACTIVE PRESET: <strong>NONE (Select a preset to start)</strong></p>";
+  }
   html += "</body></html>";
   server.send(200, "text/html", html);
 }
@@ -227,10 +233,11 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   
-  // Load the first preset by default
-  applyPreset(0);
-  
-  // start WiFi in AP+STA mode to allow Web Server initially
+  // Ensure no preset is active on boot
+  currentPresetIndex = -1;
+  activeSsids[0] = '\0'; // Clear the active SSID buffer
+
+  // start WiFi in AP+STA mode to allow Web Server while keeping STA for beacon spam
   WiFi.mode(WIFI_MODE_APSTA);
   
   // Start Access Point for Web UI
@@ -271,8 +278,8 @@ void loop() {
 
   currentTime = millis();
 
-  // send out SSIDs
-  if (currentTime - attackTime > 100) {
+  // send out SSIDs ONLY if a preset is currently active
+  if (currentPresetIndex >= 0 && currentTime - attackTime > 100) {
     attackTime = currentTime;
 
     int i = 0;
