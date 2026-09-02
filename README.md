@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://www.media-underground.net/images/spammer.png">
+ <img src="https://www.media-underground.net/images/beacon.png">
 </p>
 
 <h3 align="center">ESP32 BEACON SPAMMER</h3>
