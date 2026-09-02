@@ -4,9 +4,10 @@ bool appendSpaces = true; // makes all SSIDs 32 characters long to improve perfo
 // ===== Preset Definitions ===== //
 // You can edit the names, SSIDs, channels, and WPA2 settings for each preset here.
 // SSIDs should be separated by \n. Max 32 characters per SSID.
+
 struct Preset {
   const char* name;
-  const char* ssids; 
+  const char* ssids;
   uint8_t ch[3];
   uint8_t chCount;
   bool wpa2;
@@ -26,7 +27,7 @@ Preset presets[10] = {
 };
 
 int currentPresetIndex = 0;
-char activeSsids[1024]; // Buffer to hold the currently active SSIDs
+char activeSsids[4096]; // Increased buffer size to allow more SSIDs per preset now that AP is disabled
 
 // ==================== //
 // ===== Includes ===== //
@@ -42,7 +43,6 @@ WebServer server(80);
 uint8_t channels[3] = {1, 6, 11}; // Active channels (updated by preset)
 uint8_t channelCount = 3;
 bool wpa2 = false;
-
 char emptySSID[32];
 uint8_t channelIndex = 0;
 uint8_t macAddr[6];
@@ -52,6 +52,10 @@ uint32_t packetSize = 0;
 uint32_t packetCounter = 0;
 uint32_t attackTime = 0;
 uint32_t packetRateTime = 0;
+
+// State tracking for Web UI / AP shutdown
+bool apActive = true;
+bool apShutDown = false;
 
 // beacon frame definition
 uint8_t beaconPacket[109] = {
@@ -100,21 +104,22 @@ void applyPreset(int index) {
   // Copy SSIDs to active buffer
   strncpy(activeSsids, presets[currentPresetIndex].ssids, sizeof(activeSsids) - 1);
   activeSsids[sizeof(activeSsids) - 1] = '\0';
-
+  
   // Update channels
   channelCount = presets[currentPresetIndex].chCount;
   if (channelCount == 0) channelCount = 1;
-  for(int i = 0; i < channelCount && i < 3; i++) {
+  for (int i = 0; i < channelCount && i < 3; i++) {
     channels[i] = presets[currentPresetIndex].ch[i];
   }
+  
   // Fill the rest with the last valid channel to prevent 0
-  for(int i = channelCount; i < 3; i++) {
+  for (int i = channelCount; i < 3; i++) {
     channels[i] = channels[channelCount - 1];
   }
-
+  
   // Update wpa2
   wpa2 = presets[currentPresetIndex].wpa2;
-
+  
   // Update packet size and capabilities based on wpa2
   if (wpa2) {
     beaconPacket[34] = 0x31;
@@ -123,12 +128,12 @@ void applyPreset(int index) {
     beaconPacket[34] = 0x21;
     packetSize = sizeof(beaconPacket) - 26;
   }
-
+  
   // Reset channel hopping to start fresh on the new preset
   channelIndex = 0;
   wifi_channel = channels[0];
   esp_wifi_set_channel(wifi_channel, WIFI_SECOND_CHAN_NONE);
-
+  
   Serial.print("Switched to: ");
   Serial.println(presets[currentPresetIndex].name);
   Serial.println("Active SSIDs:");
@@ -164,7 +169,7 @@ void handleRoot() {
   html += "<title>ESP32 Beacon Spammer</title>";
   html += "<style>";
   html += "body { background-color: #000000; color: #00FF00; font-family: 'Courier New', Courier, monospace; text-align: center; margin: 0; padding: 20px; box-sizing: border-box; min-height: 100vh; }";
-  html += "h1, h2, p, select, button { text-shadow: 0 0 5px #00FF00; }"; // CRT phosphor glow effect
+  html += "h1, h2, p, select, button { text-shadow: 0 0 5px #00FF00; }";
   html += "h1 { font-size: 24px; margin-bottom: 10px; letter-spacing: 2px; }";
   html += "h2 { font-size: 18px; margin-top: 30px; }";
   html += "select { background-color: #000000; color: #00FF00; border: 2px solid #00FF00; padding: 10px; font-size: 16px; font-family: 'Courier New', Courier, monospace; margin: 10px; cursor: pointer; outline: none; }";
@@ -175,10 +180,8 @@ void handleRoot() {
   html += ".blink { animation: blinker 1s step-end infinite; }";
   html += "@keyframes blinker { 50% { opacity: 0; } }";
   html += "</style></head><body>";
-  
   html += "<h1>> ESP32 BEACON SPAMMER _<span class='blink'>|</span></h1>";
   html += "<h2>[ SELECT TARGET PRESET ]</h2>";
-  
   html += "<form action='/apply' method='POST'>";
   html += "<select name='preset'>";
   for (int i = 0; i < 10; i++) {
@@ -187,7 +190,6 @@ void handleRoot() {
   html += "</select><br>";
   html += "<button type='submit'>[ EXECUTE ]</button>";
   html += "</form>";
-  
   html += "<p class='current'>ACTIVE PRESET: <strong>" + String(presets[currentPresetIndex].name) + "</strong></p>";
   html += "</body></html>";
   server.send(200, "text/html", html);
@@ -198,8 +200,19 @@ void handleApply() {
     int presetIndex = server.arg("preset").toInt();
     applyPreset(presetIndex);
   }
-  server.sendHeader("Location", "/", true);
-  server.send(302, "text/plain", "Redirecting...");
+  
+  // Send a final response before shutting down the network stack
+  String html = "<!DOCTYPE html><html><head><meta http-equiv='refresh' content='5;url=/'></head>";
+  html += "<body style='background-color:#000;color:#00FF00;font-family:\"Courier New\",Courier,monospace;text-align:center;padding:50px;'>";
+  html += "<h1>> PRESET APPLIED_</h1>";
+  html += "<p>Shutting down Web UI and Access Point to maximize beacon spam performance...</p>";
+  html += "<p>Device will continue spamming in the background.</p>";
+  html += "</body></html>";
+  
+  server.send(200, "text/html", html);
+  
+  // Trigger AP shutdown on next loop iteration to ensure HTTP response is fully sent
+  apActive = false;
 }
 
 void setup() {
@@ -207,43 +220,54 @@ void setup() {
   for (int i = 0; i < 32; i++) {
     emptySSID[i] = ' ';
   }
-
+  
   randomSeed(esp_random());
   randomMac();
-
+  
   Serial.begin(115200);
   Serial.println();
-
+  
   // Load the first preset by default
   applyPreset(0);
-
-  // start WiFi in AP+STA mode to allow Web Server while keeping STA for beacon spam
+  
+  // start WiFi in AP+STA mode to allow Web Server initially
   WiFi.mode(WIFI_MODE_APSTA);
   
   // Start Access Point for Web UI
   WiFi.softAP("ESP32-Beacon-Config");
   Serial.println("Web UI AP started. Connect to 'ESP32-Beacon-Config' and visit:");
   Serial.println(WiFi.softAPIP());
-
+  
   // Setup Web Server routes
   server.on("/", HTTP_GET, handleRoot);
   server.on("/apply", HTTP_POST, handleApply);
   server.begin();
   Serial.println("Web server started");
-
+  
   // Enable promiscuous mode to ensure raw frame transmission works reliably on ESP32
   esp_wifi_set_promiscuous(true);
   
   // Set to default WiFi channel
   esp_wifi_set_channel(channels[0], WIFI_SECOND_CHAN_NONE);
-
+  
   Serial.println("Started o/");
   Serial.println();
 }
 
 void loop() {
-  // Handle Web Server requests
-  server.handleClient();
+  // Handle AP and Web Server shutdown if requested
+  if (!apActive && !apShutDown) {
+    server.stop();
+    WiFi.softAPdisconnect(true);
+    WiFi.mode(WIFI_MODE_STA); // Switch to STA only to free up AP resources
+    apShutDown = true;
+    Serial.println("AP and Web UI shut down. Maximum resources allocated to beacon spamming.");
+  }
+
+  // Handle Web Server requests ONLY if AP is still active
+  if (apActive) {
+    server.handleClient();
+  }
 
   currentTime = millis();
 
@@ -257,6 +281,7 @@ void loop() {
     char tmp;
     int ssidsLen = strlen(activeSsids);
 
+    // Go to next channel
     nextChannel();
 
     while (i < ssidsLen) {
