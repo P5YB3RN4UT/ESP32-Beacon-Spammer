@@ -85,7 +85,6 @@ Flashing the ESP32:
    - Go to **File > Preferences**.
    - In **Additional Board Manager URLs**, add:  
        https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-   - Go to **Tools > Board > Board Manager** and install **esp32 by Espressif Systems** (<i>Note: Ensure you install version 2.0.17 and not a later release</i>).
 
 2. Download the **ESP32-Beacon-Spammer** Repository and unzip the contents to the Arduino folder.
    - Open **Arduino IDE** and go to **File > Open**.
