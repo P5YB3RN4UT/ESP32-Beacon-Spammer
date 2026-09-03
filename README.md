@@ -20,7 +20,7 @@ In Progress...
 
 
 ## Overall Concept
-In Progress...
+The basic idea was to create a standalone 'Beacon Spammer' device so sufficiently affordable that losing one shouldn't be an issue. Most devices that can run this feature come bundled with other features (for example, the LilyGO T-Embed CC1101 or M5Stack Cardputer ADV running Bruce Firmware) where deployment and loss of the device is undesirable. Also, deployment of these other devices under different weather conditions is impractical and unrealistic, hence this standalone project.
 
 
 ## Hardware
@@ -60,11 +60,33 @@ Additional:
 
 
 ## Installation
-In Progress...
+Flashing the ESP32:
+1. Install **Arduino IDE** and add the ESP32 board support package:
+   - Open **Arduino IDE**.
+   - Go to **File > Preferences**.
+   - In **Additional Board Manager URLs**, add:  
+       https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+   - Go to **Tools > Board > Board Manager** and install **esp32 by Espressif Systems** (<i>Note: Ensure you install version 2.0.17 and not a later release</i>).
+
+2. Download the **ESP32-Beacon-Spammer** Repository and unzip the contents to the Arduino folder.
+   - Open **Arduino IDE** and go to **File > Open**.
+   - Select the downloaded main.ino file.
+
+3. Lines 17 to 26 of the code includes ten presets. You can modify these to whatever you want (maximum 32 characters per SSID and separated by **\n**. You can also spoof WPA2 encryption on each preset by replacing **False** with **True** at the end of each preset.
+
+4. Line 244 of the code is the SSID and password for the initial Web UI access point. It can be changed here.
+ 
+5. Compile and upload the code to your ESP32.
 
 
 ## Operation
-In Progress...
+
+1. Switch on the device.
+2. Connect to the WiFi access point "**•°|°•**" with the password "**p5yb3rn4ut**".
+3. Open a browser at the URL **http://192.168.4.1**.
+4. Choose one of the ten target presets and hit "**EXECUTE**".
+5. A final response will be sent before the shutting down the Web UI and access point in order to maximise beacon spam performance.
+6. To choose another preset either disconnect and reconnect power to the ESP32 or hit the onboard reset button and repeat operation as before.
 
 
 ## Photos
