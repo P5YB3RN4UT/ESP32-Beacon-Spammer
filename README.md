@@ -104,7 +104,7 @@ Flashing the ESP32:
 2. Connect to the WiFi access point "**•°|°•**" with the password "**p5yb3rn4ut**".
 3. Open a browser at the URL **http://192.168.4.1**.
 4. Choose one of the ten target presets and hit "**EXECUTE**".
-5. A final response will be sent before the .
+5. A final response will be sent before the Web UI and initial access point completely shut down to maximise beacon spam performance.
 6. To choose another preset either disconnect and reconnect power to the ESP32 or hit the onboard reset button and repeat operation as before.
 
 
