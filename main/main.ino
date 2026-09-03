@@ -14,16 +14,16 @@ struct Preset {
 };
 
 Preset presets[10] = {
-  {"Test", "Test01\nTest02\nTest03\nTest04\nTest05\nTest06\nTest07\nTest08\nTest09\nTest10\n", {1, 6, 11}, 3, false},
-  {"Goetia", "Bael\nAgares\nVassago\nSamigina\nMarbas\nValefor\nAmon\nBarbatos\nPaimon\nBuer\nGuison\nSitri\nBeleth\nLeraje\nEligos\nZepar\nBotis\nBathin\nSallos\nPurson\nMarax\nIpos\nAim\nNaberius\nGlasya-Labolas\nBune\nRonove\nBerith\nAstaroth\nForneus\nForas\nAsmoday\nGaap\nFurfur\nMarchosias\nStolas\nPhenex\nHalphas\nMalphas\nRaum\nFocalor\nVepar\nSabnock\nShax\nVine\nBifrons\nVual\nHaagenti\nCrocell\nFurcas\nBalam\nAlloces\nCaim\nMurmur\nOrobas\nGremory\nOse\nAmy\nOrias\nVapula\nZagan\nValac\nAndras\nHaures\nAndrealphus\nCimeies\nAmdusias\nBelial\nDecarabia\nSeere\nDantalion\nAndromalius\n", {1, 6, 11}, 3, false},
-  {"Golf", "A Good Walk Spoiled\nGeriatrics Only Losers Favoured\nTadger Woods\nSmug Bastards Gowf Club\nGrass Chasers\nThe Old Man Shuffle\nGolf Harris\nPutt Putt\nRory McKilljoy\nDonald Gump Plays Gowf\nDonald Gump Is A Paedo\nChasing A Little White Ball\nTeatime Torture\nPro Lawn Ornament Hunters\nGowf Is Bowff\nGrassy Puttocks\nLawn Tiddlywinks\nTake Me In The Bunker\n18 Holes Of Nothing\nBunker Bummers\nPutt It In My Hole\nCheck Out My Action Slacks\nTee Off Then Piss Off\nGrab My Putt Stick\nA Tuft Of Ass\nDirthole Digglers\nOne Glove Love\nTickle My Dimpled White Balls\n18 Dirtholes Of Man Joy\nA Pastime For Pensioners\nA Hole In Bum\nTony Jackshit\nFore!Skin\nA Putt In The Butt\nGrip The Shaft Tightly\nLawn Shufflers\nWiggle My Puttocks\nUp The Bunker\nSpank Me With Your Golf Shoe\n19th Gloryhole\nCaddyshat\nDonald Gump Gowf Club\nGolf Is For Losers\n", {1, 6, 11}, 3, false},
-  {"Rickroll", "1 Never Gonna Give You Up\n2 Never Gonna Let You Down\n3 Never Gonna Run Around\n4 And Desert You\n5 Never Gonna Make You Cry\n6 Never Gonna Say Goodbye\n7 Never Gonna Tell A Lie\n8 And Hurt You\n", {1, 6, 11}, 3, false},
-  {"Custom 1", "Custom1\n", {1, 6, 11}, 3, false},
-  {"Custom 2", "Custom2\n", {1, 6, 11}, 3, false},
-  {"Custom 3", "Custom3\n", {1, 6, 11}, 3, false},
-  {"Custom 4", "Custom4\n", {1, 6, 11}, 3, false},
-  {"Custom 5", "Custom5\n", {1, 6, 11}, 3, false},
-  {"Custom 6", "Custom6\n", {1, 6, 11}, 3, false}
+  {"TEST", "Test01\nTest02\nTest03\nTest04\nTest05\nTest06\nTest07\nTest08\nTest09\nTest10\n", {1, 6, 11}, 3, false},
+  {"RICKROLL", "1 Never Gonna Give You Up\n2 Never Gonna Let You Down\n3 Never Gonna Run Around\n4 And Desert You\n5 Never Gonna Make You Cry\n6 Never Gonna Say Goodbye\n7 Never Gonna Tell A Lie\n8 And Hurt You\n", {1, 6, 11}, 3, false},
+  {"GOETIA", "Bael\nAgares\nVassago\nSamigina\nMarbas\nValefor\nAmon\nBarbatos\nPaimon\nBuer\nGuison\nSitri\nBeleth\nLeraje\nEligos\nZepar\nBotis\nBathin\nSallos\nPurson\nMarax\nIpos\nAim\nNaberius\nGlasya-Labolas\nBune\nRonove\nBerith\nAstaroth\nForneus\nForas\nAsmoday\nGaap\nFurfur\nMarchosias\nStolas\nPhenex\nHalphas\nMalphas\nRaum\nFocalor\nVepar\nSabnock\nShax\nVine\nBifrons\nVual\nHaagenti\nCrocell\nFurcas\nBalam\nAlloces\nCaim\nMurmur\nOrobas\nGremory\nOse\nAmy\nOrias\nVapula\nZagan\nValac\nAndras\nHaures\nAndrealphus\nCimeies\nAmdusias\nBelial\nDecarabia\nSeere\nDantalion\nAndromalius\n", {1, 6, 11}, 3, false},
+  {"GOLF", "A Good Walk Spoiled\nGeriatrics Only Losers Favoured\nTadger Woods\nSmug Bastards Gowf Club\nGrass Chasers\nThe Old Man Shuffle\nGolf Harris\nPutt Putt\nRory McKilljoy\nDonald Gump Plays Gowf\nDonald Gump Is A Paedo\nChasing A Little White Ball\nTeatime Torture\nPro Lawn Ornament Hunters\nGowf Is Bowff\nGrassy Puttocks\nLawn Tiddlywinks\nTake Me In The Bunker\n18 Holes Of Nothing\nBunker Bummers\nPutt It In My Hole\nCheck Out My Action Slacks\nTee Off Then Piss Off\nGrab My Putt Stick\nA Tuft Of Ass\nDirthole Digglers\nOne Glove Love\nTickle My Dimpled White Balls\n18 Dirtholes Of Man Joy\nA Pastime For Pensioners\nA Hole In Bum\nTony Jackshit\nFore!Skin\nA Putt In The Butt\nGrip The Shaft Tightly\nLawn Shufflers\nWiggle My Puttocks\nUp The Bunker\nSpank Me With Your Golf Shoe\n19th Gloryhole\nCaddyshat\nDonald Gump Gowf Club\nGolf Is For Losers\n", {1, 6, 11}, 3, false},
+  {"SODROLL", "1 Kill yourself, kill yourself\n2 Why don't you kill yourself?\n3 Don't rely on no one else\n4 End it all, kill yourself\n5 Kill yourself, kill yourself\n6 Why don't you kill yourself?\n7 Don't rely on no one else\n8 End it all, kill yourself now\n", {1, 6, 11}, 3, false},
+  {"CUSTOM 1", "Custom 1\n", {1, 6, 11}, 3, false},
+  {"CUSTOM 2", "Custom 2\n", {1, 6, 11}, 3, false},
+  {"CUSTOM 3", "Custom 3\n", {1, 6, 11}, 3, false},
+  {"CUSTOM 4", "Custom 4\n", {1, 6, 11}, 3, false},
+  {"CUSTOM 5", "Custom 5\n", {1, 6, 11}, 3, false}
 };
 
 int currentPresetIndex = -1; // -1 means no preset is active
