@@ -90,7 +90,7 @@ Flashing the ESP32:
    - Open **Arduino IDE** and go to **File > Open**.
    - Select the downloaded main.ino file.
 
-3. Lines 17 to 26 of the code includes ten presets. You can modify these to whatever you want (maximum 32 characters per SSID and separated by **\n**. You can also spoof WPA2 encryption on each preset by replacing **False** with **True** at the end of each preset.
+3. Lines 17 to 26 of the code includes ten presets. You can modify these to whatever you want (maximum 32 characters per SSID and separated by **\n**). You can also spoof WPA2 encryption on each preset by replacing **False** with **True** at the end of each preset.
 
 4. Line 244 of the code is the SSID and password for the initial Web UI access point. It can be changed here.
  
