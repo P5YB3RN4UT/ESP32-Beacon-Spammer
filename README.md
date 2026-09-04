@@ -34,12 +34,13 @@ This project includes source code for a Beacon Spammer with the following requir
 ## Overall Concept
 The basic idea was to create a standalone 'Beacon Spammer' device so sufficiently affordable that losing one shouldn't be an issue. Most devices that can run this feature come bundled with other features (for example, the LilyGO T-Embed CC1101 or M5Stack Cardputer ADV running Bruce Firmware) where deployment and loss of the device is undesirable. Also, deployment of these other devices under different weather conditions is impractical and unrealistic, hence this standalone project.
 
-Note: All ten presets are completely customisable at code level. Currently on this build I have created five ready-to-go presets and left five ready for customisation. The five ready-to-go presets are as follows:
+Note: All ten presets are completely customisable at code level. Currently on this build I have created six ready-to-go presets and left four ready for customisation. The six ready-to-go presets are as follows:
 1. TEST: <i>This broadcasts ten test access points.</i>
 2. RICKROLL: <i>Everyone's favourite Rick Astley spamming roll of the "Never Gonna Give You Up" chorus lyrics.</i>
 3. GOETIA: <i>This is one for the occultists and lists all 72 demons from the Ars Goetia.</i>
 4. GOLF: <i>I hate everything about Golf and everyone who plays this stupid game, so I created this.</i>
 5. SODROLL: <i>Chorus lyrics to the song "Kill Yourself" by the band 'Stormtroopers Of Death' (note: please don't kill yourself, it's just a song).</i>
+6. HICKSROLL: <i>Wise words from the late outlaw comic Bill Hicks.</i>
 
 
 ## Hardware
