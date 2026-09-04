@@ -37,9 +37,9 @@ The basic idea was to create a standalone 'Beacon Spammer' device so sufficientl
 Note: All ten presets are completely customisable at code level. Currently on this build I have created five ready-to-go presets and left five ready for customisation. The five ready-to-go presets are as follows:
 1. TEST: <i>This broadcasts ten test access points.</i>
 2. RICKROLL: <i>Everyone's favourite Rick Astley spamming roll of the "Never Gonna Give You Up" chorus lyrics.</i>
-3. GOETIA: <i>This is one for the occultists out there and lists all 72 Ars Goetia demons from the Lesser Key of Solomon.</i>
+3. GOETIA: <i>This is one for the occultists and lists all 72 demons from the Ars Goetia.</i>
 4. GOLF: <i>I hate everything about Golf and everyone who plays this stupid game, so I created this.</i>
-5. SODROLL: <i>Chorus lyrics to the song "Kill Yourself" by the band 'Stormtroopers Of Death'.</i>
+5. SODROLL: <i>Chorus lyrics to the song "Kill Yourself" by the band 'Stormtroopers Of Death' (note: please don't kill yourself, it's just a song).</i>
 
 
 ## Hardware
@@ -63,7 +63,7 @@ Additional:
 
 ## Software
 
-[ArduinoIDE](https://www.arduino.cc/en/software) - For Programming The Device.
+[Arduino IDE](https://www.arduino.cc/en/software) - For Programming The Device.
 
 
 ## Pinout
