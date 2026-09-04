@@ -113,3 +113,4 @@ Flashing the ESP32:
 <img src="https://www.media-underground.net/images/evil_portable02.jpg">
 <img src="https://www.media-underground.net/images/evil_portable03.jpg">
 
+[![WDGWars](https://wdgwars.pl/card/345-4HN42QTP.svg)](https://wdgwars.pl/)
