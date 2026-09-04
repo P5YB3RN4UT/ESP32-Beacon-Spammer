@@ -19,11 +19,11 @@ Preset presets[10] = {
   {"GOETIA", "Bael\nAgares\nVassago\nSamigina\nMarbas\nValefor\nAmon\nBarbatos\nPaimon\nBuer\nGuison\nSitri\nBeleth\nLeraje\nEligos\nZepar\nBotis\nBathin\nSallos\nPurson\nMarax\nIpos\nAim\nNaberius\nGlasya-Labolas\nBune\nRonove\nBerith\nAstaroth\nForneus\nForas\nAsmoday\nGaap\nFurfur\nMarchosias\nStolas\nPhenex\nHalphas\nMalphas\nRaum\nFocalor\nVepar\nSabnock\nShax\nVine\nBifrons\nVual\nHaagenti\nCrocell\nFurcas\nBalam\nAlloces\nCaim\nMurmur\nOrobas\nGremory\nOse\nAmy\nOrias\nVapula\nZagan\nValac\nAndras\nHaures\nAndrealphus\nCimeies\nAmdusias\nBelial\nDecarabia\nSeere\nDantalion\nAndromalius\n", {1, 6, 11}, 3, false},
   {"GOLF", "A Good Walk Spoiled\nGeriatrics Only Losers Favoured\nTadger Woods\nSmug Bastards Gowf Club\nGrass Chasers\nThe Old Man Shuffle\nGolf Harris\nPutt Putt\nRory McKilljoy\nDonald Gump Plays Gowf\nDonald Gump Is A Paedo\nChasing A Little White Ball\nTeatime Torture\nPro Lawn Ornament Hunters\nGowf Is Bowff\nGrassy Puttocks\nLawn Tiddlywinks\nTake Me In The Bunker\n18 Holes Of Nothing\nBunker Bummers\nPutt It In My Hole\nCheck Out My Action Slacks\nTee Off Then Piss Off\nGrab My Putt Stick\nA Tuft Of Ass\nDirthole Digglers\nOne Glove Love\nTickle My Dimpled White Balls\n18 Dirtholes Of Man Joy\nA Pastime For Pensioners\nA Hole In Bum\nTony Jackshit\nFore!Skin\nA Putt In The Butt\nGrip The Shaft Tightly\nLawn Shufflers\nWiggle My Puttocks\nUp The Bunker\nSpank Me With Your Golf Shoe\n19th Gloryhole\nCaddyshat\nDonald Gump Gowf Club\nGolf Is For Losers\n", {1, 6, 11}, 3, false},
   {"SODROLL", "1 Kill Yourself, Kill Yourself\n2 Why Don't You Kill Yourself?\n3 Don't Rely On No One Else\n4 End It All, Kill Yourself\n5 Kill Yourself, Kill Yourself\n6 Why Don't You Kill Yourself?\n7 Don't Rely On No One Else\n8 End It All, Kill Yourself Now!\n", {1, 6, 11}, 3, false},
+  {"HICKSROLL", "01 Today A Young Man\n02 On Acid Realized\n03 That All Matter\n04 Is Merely Energy Condensed\n05 To A Slow Vibration\n06 That We Are All One\n07 Consciousness\n08 Experiencing Itself\n09 Subjectively\n10 There Is No Such Thing\n11 As Death\n12 Life Is Only A Dream\n13 And We Are The Imagination\n14 Of Ourselves\n15 Heres Tom With The Weather\n", {1, 6, 11}, 3, false},
   {"CUSTOM 1", "Custom 1\n", {1, 6, 11}, 3, false},
   {"CUSTOM 2", "Custom 2\n", {1, 6, 11}, 3, false},
   {"CUSTOM 3", "Custom 3\n", {1, 6, 11}, 3, false},
-  {"CUSTOM 4", "Custom 4\n", {1, 6, 11}, 3, false},
-  {"CUSTOM 5", "Custom 5\n", {1, 6, 11}, 3, false}
+  {"CUSTOM 4", "Custom 4\n", {1, 6, 11}, 3, false}
 };
 
 int currentPresetIndex = -1; // -1 means no preset is active
