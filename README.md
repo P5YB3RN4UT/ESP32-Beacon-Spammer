@@ -61,14 +61,14 @@ Additional:
 
 ## Pinout
 
-| 18650 Battery | TC/TP4056 Charging Module | ESP32-WROOM-32 | USB-C Socket |
-|:---:|:---:|:---:|:---:|
-| + | B + |  |  |
-| -	| B - |  |  |
-|  	| OUT + | 3V3 |  |
-|  	| OUT - | GND |  |
-|  	| IN + |  | RED WIRE |
-|  	| IN - |  | BLACK WIRE |
+| 18650 Battery | TC/TP4056 Charging Module | Switch | ESP32-WROOM-32 | USB-C Socket |
+|:---:|:---:|:---:|:---:|:---:|
+| + | B + |  |  |  |
+| -	| B - |  |  |  |
+|  	| OUT + | °/° | 3V3 |  |
+|  	| OUT - |  | GND |  |
+|  	| IN + |  |  | RED WIRE |
+|  	| IN - |  |  | BLACK WIRE |
 
 
 ## Installation
