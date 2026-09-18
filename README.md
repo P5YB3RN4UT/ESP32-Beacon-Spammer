@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://www.media-underground.net/images/beacon.png">
+ <img src="https://raw.githubusercontent.com/P5YB3RN4UT/ESP32-Beacon-Spammer/master/img/beacon.png">
 </p>
 
 <h3 align="center">ESP32 BEACON SPAMMER</h3>
@@ -115,8 +115,6 @@ Flashing the ESP32:
 
 ## Photos
 
-<img src="https://www.media-underground.net/images/evil_portable01.jpg">
-<img src="https://www.media-underground.net/images/evil_portable02.jpg">
-<img src="https://www.media-underground.net/images/evil_portable03.jpg">
-
-[![WDGWars](https://wdgwars.pl/card/345-4HN42QTP.svg)](https://wdgwars.pl/)
+<img src="https://raw.githubusercontent.com/P5YB3RN4UT/ESP32-Beacon-Spammer/master/img/beacon_spammer01.jpg">
+<img src="https://raw.githubusercontent.com/P5YB3RN4UT/ESP32-Beacon-Spammer/master/img/beacon_spammer02.jpg">
+<img src="https://raw.githubusercontent.com/P5YB3RN4UT/ESP32-Beacon-Spammer/master/img/beacon_spammer03.jpg">
